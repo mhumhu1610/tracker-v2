@@ -4,16 +4,33 @@
 
 Most often one of these:
 
-### 1. Missing environment variables at build time (most common)
+### 1. Missing Supabase configuration (most common)
 
-Vite embeds `VITE_*` variables when you run `npm run build`. If your host does not have them, the app shows a **Configuration missing** screen (or used to show a blank page).
+**Fix A — Env vars on your host** (Vercel / Netlify / Cloudflare):
 
-**Fix:** Add these in your hosting dashboard, then **redeploy**:
-
-| Variable | Example |
-|----------|---------|
+| Variable | Value |
+|----------|--------|
 | `VITE_SUPABASE_URL` | `https://oeqriusqgaqcoreusouq.supabase.co` |
 | `VITE_SUPABASE_ANON_KEY` | your Supabase publishable / anon key |
+
+Save → **Redeploy**.
+
+**Fix B — Build locally with `.env`:**
+
+```bash
+# .env must contain VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
+npm run build
+```
+
+`prebuild` writes `public/config.json` into `dist/`. Upload or deploy the `dist` folder.
+
+**Fix C — Manual config.json:**
+
+```bash
+cp public/config.example.json public/config.json
+# edit public/config.json with your keys
+npm run build
+```
 
 ### 2. Wrong publish folder
 

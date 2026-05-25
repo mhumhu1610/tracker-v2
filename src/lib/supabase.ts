@@ -1,25 +1,21 @@
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-
-const url = import.meta.env.VITE_SUPABASE_URL ?? "";
-const key = import.meta.env.VITE_SUPABASE_ANON_KEY ?? "";
-
-export const isSupabaseConfigured = Boolean(url && key);
+import { getSupabaseConfig } from "./config";
 
 let client: SupabaseClient | null = null;
 
 export function getSupabase(): SupabaseClient {
-  if (!isSupabaseConfigured) {
+  const config = getSupabaseConfig();
+  if (!config) {
     throw new Error(
-      "Missing VITE_SUPABASE_URL or VITE_SUPABASE_ANON_KEY. Set them in your hosting provider before building.",
+      "Supabase is not configured. Set VITE_* env vars at build time or add public/config.json.",
     );
   }
   if (!client) {
-    client = createClient(url, key);
+    client = createClient(config.url, config.anonKey);
   }
   return client;
 }
 
-/** @deprecated Prefer getSupabase(); kept for gradual migration */
 export const supabase = new Proxy({} as SupabaseClient, {
   get(_target, prop) {
     const instance = getSupabase();
