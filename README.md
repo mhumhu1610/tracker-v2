@@ -88,6 +88,14 @@ Then sign out and sign in again.
 3. `npm install && npm run dev`
 4. Open http://localhost:5173 — use **Sign up** or create users in the Dashboard.
 
+## Deploy (fix blank page)
+
+1. Add **`VITE_SUPABASE_URL`** and **`VITE_SUPABASE_ANON_KEY`** in your host (Vercel / Netlify / Cloudflare).  
+2. Build: `npm run build` · Publish folder: **`dist`**  
+3. **Redeploy** after adding env vars (they are embedded at build time).  
+
+See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md)
+
 ## Stack
 
 React 19 · TypeScript · Vite · Tailwind · Supabase (Auth + RLS)
